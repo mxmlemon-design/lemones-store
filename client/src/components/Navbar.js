@@ -1,82 +1,58 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
-import { FiSearch, FiShoppingCart, FiUser, FiMenu, FiX } from 'react-icons/fi';
+import Link from 'next/link';
+import { FiMenu, FiX, FiShoppingCart, FiUser } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [cartCount] = useState(0);
 
-  const navItems = [
+  const navLinks = [
     { label: 'Home', href: '/' },
-    { label: 'Fashion', href: '/products?category=fashion' },
-    { label: 'Gadgets', href: '/products?category=gadgets' },
+    { label: 'Products', href: '/products' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
   ];
 
   return (
-    <nav className="fixed w-full top-0 z-50 glass border-b border-gold-dark/20">
+    <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-sm border-b border-gold/20 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="text-2xl font-bold gradient-text"
-            >
-              ✨ Lemones
-            </motion.div>
+            <span className="text-2xl sm:text-3xl font-bold gradient-text">🍋 Lemones</span>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
+          <div className="hidden md:flex gap-8 items-center">
+            {navLinks.map((link) => (
               <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium hover:text-gold transition-colors"
+                key={link.href}
+                href={link.href}
+                className="text-white hover:text-gold transition-colors font-medium"
               >
-                {item.label}
+                {link.label}
               </Link>
             ))}
           </div>
 
-          {/* Right Icons */}
-          <div className="flex items-center gap-6">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              className="hidden sm:flex text-xl hover:text-gold"
-            >
-              <FiSearch />
-            </motion.button>
-
-            <Link href="/cart" className="relative">
-              <motion.div whileHover={{ scale: 1.1 }} className="text-xl">
-                <FiShoppingCart />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-wine text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </motion.div>
+          {/* Icons */}
+          <div className="flex items-center gap-4">
+            <Link href="/cart" className="relative text-white hover:text-gold transition-colors">
+              <FiShoppingCart className="text-xl sm:text-2xl" />
+              <span className="absolute -top-2 -right-2 bg-gold text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
             </Link>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              className="text-xl hover:text-gold"
-            >
-              <FiUser />
-            </motion.button>
+            <Link href="/account" className="hidden sm:block text-white hover:text-gold transition-colors">
+              <FiUser className="text-xl sm:text-2xl" />
+            </Link>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-xl"
+              className="md:hidden text-white hover:text-gold transition-colors"
             >
-              {isOpen ? <FiX /> : <FiMenu />}
+              {isOpen ? <FiX className="text-2xl" /> : <FiMenu className="text-2xl" />}
             </button>
           </div>
         </div>
@@ -87,17 +63,25 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="md:hidden pb-4 space-y-2"
+            className="md:hidden pb-4 border-t border-gold/20 space-y-3"
           >
-            {navItems.map((item) => (
+            {navLinks.map((link) => (
               <Link
-                key={item.href}
-                href={item.href}
-                className="block px-4 py-2 hover:bg-gold/10 rounded"
+                key={link.href}
+                href={link.href}
+                className="block px-4 py-2 text-white hover:text-gold hover:bg-white/5 rounded transition-colors"
+                onClick={() => setIsOpen(false)}
               >
-                {item.label}
+                {link.label}
               </Link>
             ))}
+            <Link
+              href="/account"
+              className="block px-4 py-2 text-white hover:text-gold hover:bg-white/5 rounded transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Account
+            </Link>
           </motion.div>
         )}
       </div>
